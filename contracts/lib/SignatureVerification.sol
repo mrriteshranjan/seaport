@@ -114,7 +114,7 @@ contract SignatureVerification is SignatureVerificationErrors, LowLevelHelpers {
                     // address if the signature is invalid.
                     pop(
                         staticcall(
-                            gas(),
+                            Ecrecover_gas, // Gas used by ecrecover precompile.
                             Ecrecover_precompile, // Call ecrecover precompile.
                             wordBeforeSignaturePtr, // Use data memory location.
                             Ecrecover_args_size, // Size of digest, r, s, and v.
