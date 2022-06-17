@@ -71,9 +71,12 @@ contract ReferenceSignatureVerification is SignatureVerificationErrors {
         address recoveredSigner = ecrecover(digest, v, r, s);
 
         // Disallow invalid signers.
-        if (recoveredSigner == address(0) || recoveredSigner != signer) {
+        if (recoveredSigner == address(0)) {
             revert InvalidSigner();
             // Should a signer be recovered, but it doesn't match the signer...
+        } else if (recoveredSigner != signer) {
+            // Attempt EIP-1271 static call to signer in case it's a contract.
+            _assertValidEIP1271Signature(signer, digest, signature);
         }
     }
 
