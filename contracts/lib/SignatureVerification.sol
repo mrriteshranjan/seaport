@@ -39,9 +39,6 @@ contract SignatureVerification is SignatureVerificationErrors, LowLevelHelpers {
 
         // Utilize assembly to perform optimized signature verification check.
         assembly {
-            // Ensure that first word of scratch space is empty.
-            mstore(0, 0)
-
             // Declare value for v signature parameter.
             let v
 
@@ -120,7 +117,7 @@ contract SignatureVerification is SignatureVerificationErrors, LowLevelHelpers {
                             gas(),
                             Ecrecover_precompile, // Call ecrecover precompile.
                             wordBeforeSignaturePtr, // Use data memory location.
-                            Ecrecover_args_size, // Size of digest, v, r, and s.
+                            Ecrecover_args_size, // Size of digest, r, s, and v.
                             0, // Write result to scratch space.
                             OneWord // Provide size of returned result.
                         )
@@ -182,6 +179,9 @@ contract SignatureVerification is SignatureVerificationErrors, LowLevelHelpers {
 
                 // Next, write the digest.
                 mstore(digestPtr, digest)
+
+                // Ensure that first word of scratch space is empty.
+                mstore(0, 0)
 
                 // Call signer with `isValidSignature` to validate signature.
                 success := staticcall(

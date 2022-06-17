@@ -130,10 +130,7 @@ contract BasicOrderFulfiller is OrderValidator {
                 additionalRecipientsToken := calldataload(
                     add(
                         BasicOrder_considerationToken_cdPtr,
-                        mul(
-                            offerTypeIsAdditionalRecipientsType,
-                            BasicOrder_common_params_size
-                        )
+                        mul(offerTypeIsAdditionalRecipientsType, FiveWords)
                     )
                 )
 
@@ -173,10 +170,7 @@ contract BasicOrderFulfiller is OrderValidator {
         assembly {
             // use offerer conduit for routes 0-3, fulfiller conduit otherwise.
             conduitKey := calldataload(
-                add(
-                    BasicOrder_offererConduit_cdPtr,
-                    mul(offerTypeIsAdditionalRecipientsType, OneWord)
-                )
+                add(BasicOrder_offererConduit_cdPtr, mul(gt(route, 3), OneWord))
             )
         }
 
@@ -850,7 +844,7 @@ contract BasicOrderFulfiller is OrderValidator {
             // Write the order hash to the head of the event's data region.
             mstore(eventDataPtr, orderHash)
 
-            // Write the fulfiller (i.e. the caller) next for receiver argument.
+            // Write the fulfiller (i.e. the caller) next.
             mstore(add(eventDataPtr, OrderFulfilled_fulfiller_offset), caller())
 
             // Write the SpentItem and ReceivedItem array offsets (constants).
