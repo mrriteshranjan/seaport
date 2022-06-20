@@ -172,13 +172,8 @@ contract SignatureVerificationTest is BaseOrderTest {
         vm.expectRevert(abi.encodeWithSignature("InvalidSigner()"));
         logic.signatureVerificationDirtyScratchSpace();
         ReferenceSignatureVerifierLogic referenceLogic = new ReferenceSignatureVerifierLogic(
-<<<<<<< HEAD
                 address(conduitController),
                 consideration
-=======
-                address(referenceConduitController),
-                referenceConsideration
->>>>>>> parent of a33bdd3 (Revert "Merge pull request #509 from ProjectOpenSea/assert-valid-signature-dirty-scratch")
             );
         vm.expectRevert(abi.encodeWithSignature("InvalidSigner()"));
         referenceLogic.referenceSignatureVerificationDirtyScratchSpace();
