@@ -288,11 +288,7 @@ contract FulfillBasicOrderTest is BaseOrderTest {
         BasicOrderParameters
             memory _basicOrderParameters = toBasicOrderParameters(
                 baseOrderComponents,
-<<<<<<< HEAD
                 BasicOrderType.ERC721_TO_ERC20_FULL_OPEN,
-=======
-                BasicOrderType.ETH_TO_ERC1155_FULL_OPEN,
->>>>>>> parent of 451a50d (fix order type)
                 signature
             );
 
